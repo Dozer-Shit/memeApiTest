@@ -7,7 +7,7 @@ __pycache__
 .vscode
 st7
 db_creds.py
-.env
+meme_api_tests/.env
 allure-results
 allure-report
 allure-rereport
