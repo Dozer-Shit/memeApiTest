@@ -7,33 +7,81 @@ from meme_api_tests.client import allure_annotations
 
 
 @allure_annotations(
-    title="Authorization test",
+    title="Authorization with valid data test",
     story="POST",
-    description='This test checks creating a token',
+    description='This test checks creating a token with valid data',
     severity=allure.severity_level.BLOCKER,
     tag='!!!'
 )
 @pytest.mark.blocker
-def test_get_auth_token(post_authorize_endpoint) -> None:
-    post_authorize_endpoint.get_token(payloads.get_token)
+def test_get_auth_token_success(post_authorize_endpoint) -> None:
+    post_authorize_endpoint.get_token(payloads.valid_auth_payload)
     success, message = post_authorize_endpoint.check_status_code_is_(200)
     assert success, message
-    success, message = post_authorize_endpoint.check_response_name_is_(payloads.get_token['name'])
+    success, message = post_authorize_endpoint.check_response_name_is_(payloads.valid_auth_payload['name'])
     assert success, message
 
 
 @allure_annotations(
-    title="Live token test",
+    title="Authorization with invalid data name ",
     story="POST",
-    description='This test checks token relevance',
+    description='This test checks creating a token with invalid data name',
+    severity=allure.severity_level.BLOCKER,
+    tag='!!!'
+)
+@pytest.mark.blocker
+@pytest.mark.parametrize("invalid_payload", payloads.invalid_payload_name(), ids=payloads.invalid_payload_name_ids)
+def test_get_auth_token_invalid_name(post_authorize_endpoint, invalid_payload: dict) -> None:
+    post_authorize_endpoint.get_token(invalid_payload)
+    success, message = post_authorize_endpoint.check_status_code_is_(400)
+    assert success, message
+    success, message = post_authorize_endpoint.check_response_message_is_('400 Bad Request')
+    assert success, message
+
+
+@allure_annotations(
+    title="Authorization with invalid field in data test",
+    story="POST",
+    description='This test checks creating a token with invalid field in data',
+    severity=allure.severity_level.BLOCKER,
+    tag='!!!'
+)
+@pytest.mark.blocker
+def test_get_auth_token_with_invalid_field(post_authorize_endpoint) -> None:
+    post_authorize_endpoint.get_token(payloads.invalid_auth_payload)
+    success, message = post_authorize_endpoint.check_status_code_is_(400)
+    assert success, message
+    success, message = post_authorize_endpoint.check_response_message_is_('400 Bad Request')
+    assert success, message
+
+
+@allure_annotations(
+    title="Live token with valid token test",
+    story="POST",
+    description='This test checks token relevance with valid token',
     severity=allure.severity_level.MINOR,
 )
 @pytest.mark.minor
-def test_check_auth_token(get_check_token_endpoint, auth_token: str) -> None:
+def test_check_valid_auth_token(get_check_token_endpoint, auth_token: str) -> None:
     get_check_token_endpoint.check_token_is_valid(auth_token)
     success, message = get_check_token_endpoint.check_status_code_is_(200)
     assert success, message
     success, message = get_check_token_endpoint.check_response_message_is_("Token is alive")
+    assert success, message
+
+
+@allure_annotations(
+    title="Live token with invalid token test",
+    story="POST",
+    description='This test checks token relevance with invalid token',
+    severity=allure.severity_level.MINOR,
+)
+@pytest.mark.minor
+def test_check_invalid_auth_token(get_check_token_endpoint) -> None:
+    get_check_token_endpoint.check_token_is_valid('invalid_token')
+    success, message = get_check_token_endpoint.check_status_code_is_(404)
+    assert success, message
+    success, message = get_check_token_endpoint.check_response_message_is_("Token not found")
     assert success, message
 
 
@@ -54,6 +102,79 @@ def test_create_meme_object(post_meme_endpoint, delete_meme, request, auth_token
 
 
 @allure_annotations(
+    title="Adding a meme object without authorization test",
+    story="POST",
+    description='This test checks adding a meme object without authorization',
+    severity=allure.severity_level.CRITICAL,
+    tag='!!!'
+)
+@pytest.mark.critical
+def test_create_meme_object_without_auth(post_meme_endpoint, delete_meme, request, auth_token: str) -> None:
+    request.node.meme_id = post_meme_endpoint.create_meme_object(payloads.create_meme, 'invalid_token')
+    success, message = post_meme_endpoint.check_status_code_is_(401)
+    assert success, message
+    success, message = post_meme_endpoint.check_response_message_is_('Unauthorized')
+    assert success, message
+
+
+@allure_annotations(
+    title="Adding a meme object with missing mandatory fields test",
+    story="POST",
+    description='This test checks adding a meme object with missing mandatory fields',
+    severity=allure.severity_level.CRITICAL,
+    tag='!!!'
+)
+@pytest.mark.critical
+@pytest.mark.parametrize(
+    "invalid_payload",
+    payloads.post_fields_binding_validation_payloads(),
+    ids=payloads.post_fields_binding_validation_payloads_ids)
+def test_create_meme_object_with_missing_fields(post_meme_endpoint, invalid_payload, request, auth_token: str) -> None:
+    request.node.meme_id = post_meme_endpoint.create_meme_object(invalid_payload, auth_token)
+    success, message = post_meme_endpoint.check_status_code_is_(400)
+    assert success, message
+    success, message = post_meme_endpoint.check_response_message_is_('Bad Request')
+    assert success, message
+
+
+@allure_annotations(
+    title="Adding a meme object with invalid data types in request payload test",
+    story="POST",
+    description='This test checks adding a meme object with invalid data types in request payload',
+    severity=allure.severity_level.CRITICAL,
+    tag='!!!'
+)
+@pytest.mark.critical
+@pytest.mark.parametrize(
+    "invalid_payload",
+    payloads.post_invalid_data_types_payloads(),
+    ids=payloads.post_invalid_data_types_payloads_ids())
+def test_create_meme_object_with_invalid_data_types(post_meme_endpoint, invalid_payload, request,
+                                                    auth_token: str) -> None:
+    request.node.meme_id = post_meme_endpoint.create_meme_object(invalid_payload, auth_token)
+    success, message = post_meme_endpoint.check_status_code_is_(400)
+    assert success, message
+    success, message = post_meme_endpoint.check_response_message_is_('Bad Request')
+    assert success, message
+
+
+@allure_annotations(
+    title="Adding a meme object with extra field test",
+    story="POST",
+    description='This test checks adding a meme object with extra field',
+    severity=allure.severity_level.CRITICAL,
+    tag='!!!'
+)
+@pytest.mark.critical
+def test_create_meme_object_with_extra_field(post_meme_endpoint, delete_meme, request, auth_token: str) -> None:
+    request.node.meme_id = post_meme_endpoint.create_meme_object(payloads.create_meme_with_an_extra_field, auth_token)
+    success, message = post_meme_endpoint.check_status_code_is_(400)
+    assert success, message
+    success, message = post_meme_endpoint.check_response_message_is_('Bad Request')
+    assert success, message
+
+
+@allure_annotations(
     title="Get meme object test",
     story="GET",
     description='This test checks getting a meme object',
@@ -65,6 +186,36 @@ def test_get_meme_object(get_meme_endpoint, meme_id: int, auth_token: str) -> No
     success, message = get_meme_endpoint.check_status_code_is_(200)
     assert success, message
     success, message = get_meme_endpoint.check_response_id_is_(meme_id)
+    assert success, message
+
+
+@allure_annotations(
+    title="Get meme object without authorization test",
+    story="GET",
+    description='This test checks getting a meme object without authorization',
+    severity=allure.severity_level.MINOR
+)
+@pytest.mark.minor
+def test_get_meme_object_without_auth(get_meme_endpoint, meme_id: int, auth_token: str) -> None:
+    get_meme_endpoint.get_meme(meme_id, 'invalid_token')
+    success, message = get_meme_endpoint.check_status_code_is_(401)
+    assert success, message
+    success, message = get_meme_endpoint.check_response_message_is_("Unauthorized")
+    assert success, message
+
+
+@allure_annotations(
+    title="Get meme object with invalid id test",
+    story="GET",
+    description='This test checks getting a meme object with invalid id',
+    severity=allure.severity_level.MINOR
+)
+@pytest.mark.minor
+def test_get_meme_object_with_invalid_id(get_meme_endpoint, meme_id: int, auth_token: str) -> None:
+    get_meme_endpoint.get_meme(0, auth_token)
+    success, message = get_meme_endpoint.check_status_code_is_(404)
+    assert success, message
+    success, message = get_meme_endpoint.check_response_message_is_("Not Found")
     assert success, message
 
 
@@ -84,11 +235,26 @@ def test_get_all_meme_objects(get_all_meme_endpoint, auth_token: str) -> None:
 
 
 @allure_annotations(
+    title="Get all meme objects without authorization test",
+    story="GET",
+    description='This test checks getting all meme objects without authorization',
+    severity=allure.severity_level.MINOR
+)
+@pytest.mark.minor
+def test_get_all_meme_objects_without_auth(get_all_meme_endpoint, auth_token: str) -> None:
+    get_all_meme_endpoint.get_all_meme('invalid_token')
+    success, message = get_all_meme_endpoint.check_status_code_is_(401)
+    assert success, message
+    success, message = get_all_meme_endpoint.check_response_message_is_("Unauthorized")
+    assert success, message
+
+
+@allure_annotations(
     title="Update meme object test",
     story="PUT",
     description='This test checks updating a meme object',
 )
-@pytest.mark.parametrize("request_data", payloads.update_payloads(), ids=payloads.payload_ids)
+@pytest.mark.parametrize("request_data", payloads.update_params_payloads(), ids=payloads.payload_update_ids)
 def test_update_object(update_meme_endpoint, request_data: dict, meme_id: int, auth_token: str) -> None:
     request_data["id"] = meme_id
     update_meme_endpoint.update_meme_object(request_data, meme_id, auth_token)
@@ -96,14 +262,80 @@ def test_update_object(update_meme_endpoint, request_data: dict, meme_id: int, a
     assert success, message
     success, message = update_meme_endpoint.check_response_text_is_(request_data['text'])
     assert success, message
-    success, message = update_meme_endpoint.check_response_title_is_(request_data['info']['title'])
+    success, message = update_meme_endpoint.check_does_the_answer_hold_a_key_('title')
+    assert success, message
+    success, message = update_meme_endpoint.check_does_the_answer_hold_a_key_('type')
     assert success, message
 
 
 @allure_annotations(
-    title="Delete meme object test",
+    title="Update meme object without authorization test",
+    story="PUT",
+    description='This test checks updating a meme object without authorization',
+)
+def test_update_object_without_auth(update_meme_endpoint, meme_id: int, auth_token: str) -> None:
+    update_meme_endpoint.update_meme_object(payloads.valid_update_payload(meme_id), meme_id, 'invalid_token')
+    success, message = update_meme_endpoint.check_status_code_is_(401)
+    assert success, message
+    success, message = update_meme_endpoint.check_response_message_is_("Unauthorized")
+    assert success, message
+
+
+@allure_annotations(
+    title="Update meme object with invalid id test",
+    story="PUT",
+    description='This test checks updating a meme object with invalid id',
+)
+def test_update_object_with_invalid_id(update_meme_endpoint, meme_id: int, auth_token: str) -> None:
+    update_meme_endpoint.update_meme_object(payloads.valid_update_payload(meme_id), 0, auth_token)
+    success, message = update_meme_endpoint.check_status_code_is_(404)
+    assert success, message
+    success, message = update_meme_endpoint.check_response_message_is_("Not Found")
+    assert success, message
+
+
+@allure_annotations(
+    title="Update meme object with invalid data types test",
+    story="PUT",
+    description='This test checks updating a meme object with invalid data types',
+)
+@pytest.mark.parametrize(
+    "invalid_data_types",
+    payloads.put_invalid_data_types_payloads(),
+    ids=payloads.put_invalid_data_types_payloads_ids())
+def test_update_object_with_invalid_data_types(update_meme_endpoint, invalid_data_types: dict, meme_id: int,
+                                               auth_token: str) -> None:
+    update_meme_endpoint.update_meme_object(invalid_data_types, meme_id, auth_token)
+    success, message = update_meme_endpoint.check_status_code_is_(400)
+    assert success, message
+    success, message = update_meme_endpoint.check_response_message_is_("Bad Request")
+    assert success, message
+
+
+@allure_annotations(
+    title="Update meme object with missing mandatory fields test",
+    story="PUT",
+    description='This test checks updating a meme object with missing mandatory fields',
+)
+@pytest.mark.parametrize(
+    "missing_data_fields",
+    payloads.put_fields_binding_validation_payloads(),
+    ids=payloads.put_fields_binding_validation_payloads_ids)
+def test_update_object_with_missing_mandatory_fields(update_meme_endpoint, missing_data_fields: dict, meme_id: int,
+                                                     auth_token: str) -> None:
+    if "id" in missing_data_fields:
+        missing_data_fields["id"] = meme_id
+    update_meme_endpoint.update_meme_object(missing_data_fields, meme_id, auth_token)
+    success, message = update_meme_endpoint.check_status_code_is_(400)
+    assert success, message
+    success, message = update_meme_endpoint.check_response_message_is_("Bad Request")
+    assert success, message
+
+
+@allure_annotations(
+    title="Delete meme object with valid id test",
     story="DELETE",
-    description='This test checks deleting a meme object',
+    description='This test checks deleting a meme object with valid id',
     tag='!!!',
     severity=allure.severity_level.CRITICAL
 )
@@ -113,4 +345,36 @@ def test_delete_meme_object(delete_meme_endpoint, meme_id_without_del, auth_toke
     success, message = delete_meme_endpoint.check_status_code_is_(200)
     assert success, message
     success, message = delete_meme_endpoint.check_response_message_is_("successfully deleted")
+    assert success, message
+
+
+@allure_annotations(
+    title="Delete meme object without authorization test",
+    story="DELETE",
+    description='This test checks deleting a meme object without authorization',
+    tag='!!!',
+    severity=allure.severity_level.CRITICAL
+)
+@pytest.mark.critical
+def test_delete_meme_object_without_authorization(delete_meme_endpoint, meme_id_without_del, auth_token: str) -> None:
+    delete_meme_endpoint.delete_meme_object(meme_id_without_del, 'invalid_token')
+    success, message = delete_meme_endpoint.check_status_code_is_(401)
+    assert success, message
+    success, message = delete_meme_endpoint.check_response_message_is_("Unauthorized")
+    assert success, message
+
+
+@allure_annotations(
+    title="Delete meme object with invalid id test",
+    story="DELETE",
+    description='This test checks deleting a meme object with invalid id',
+    tag='!!!',
+    severity=allure.severity_level.CRITICAL
+)
+@pytest.mark.critical
+def test_delete_meme_object_with_invalid_id(delete_meme_endpoint, meme_id_without_del, auth_token: str) -> None:
+    delete_meme_endpoint.delete_meme_object(0, auth_token)
+    success, message = delete_meme_endpoint.check_status_code_is_(404)
+    assert success, message
+    success, message = delete_meme_endpoint.check_response_message_is_("Not Found")
     assert success, message

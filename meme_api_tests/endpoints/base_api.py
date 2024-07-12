@@ -26,18 +26,8 @@ class BaseApi:
         return self.valid_response.url == url_resp, (f"Expected year {url_resp}, "
                                                      + f"got {self.valid_response.url}")
 
-    @allure.step('Check response type')
-    def check_response_type_is_(self, type_resp: str) -> tuple[bool, str]:
-        return self.valid_response.info.type == type_resp, (f"Expected price {type_resp}, "
-                                                            + f"got {self.valid_response.info.type}")
-
-    @allure.step('Check response title')
-    def check_response_title_is_(self, title_resp: str) -> tuple[bool, str]:
-        return self.valid_response.info.title == title_resp, (f"Expected cpu model {title_resp}, "
-                                                              + f"got {self.valid_response.info.title}")
-
     @allure.step('Check response tags')
-    def check_response_hard_disk_size_is_(self, tags_resp: list) -> tuple[bool, str]:
+    def check_response_tags_is_(self, tags_resp: list) -> tuple[bool, str]:
         return self.valid_response.tags == tags_resp, (f"Expected hard disk size {tags_resp}, "
                                                        + f"got {self.valid_response.tags}")
 

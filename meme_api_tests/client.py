@@ -57,6 +57,9 @@ def validate_response(self, response_json: dict, response_type: str, schema: Any
             elif response_type == "TokenGetResponse":
                 self.valid_response = valid_response
                 return self.valid_response
+            elif response_type == "GetAllResponse":
+                self.valid_response = valid_response
+                return self.valid_response
         except Exception as e:
             attach_error(str(e), name="Validation Error")
             assert False, f"Validation error: {str(e)}"

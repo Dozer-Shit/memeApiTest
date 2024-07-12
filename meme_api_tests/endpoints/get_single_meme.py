@@ -9,14 +9,14 @@ from meme_api_tests.endpoints.schemas import ResponseSchema
 
 
 class GetMeme(BaseApi):
-    @allure.step('Get object')
+    @allure.step('Get meme object')
     def get_meme(self, meme_id: int, token: str) -> None:
         headers: dict = {"Authorization": token}
         self.response: requests.Response = requests.get(f"{MEME_URL}/{meme_id}", headers=headers)
         # attach_response(self.response, "Response")
-        response_json: dict = self.response.json()
-
-        validate_response(self, response_json, "Response", ResponseSchema)
+        if 'application/json' in self.response.headers.get('Content-Type', ''):
+            response_json: dict = self.response.json()
+            validate_response(self, response_json, "Response", ResponseSchema)
 
     @allure.step('Check response id')
     def check_response_id_is_(self, meme_id) -> tuple[bool, str]:

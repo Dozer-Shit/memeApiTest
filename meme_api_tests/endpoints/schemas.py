@@ -1,14 +1,14 @@
 from pydantic import BaseModel
 
 
-class ObjInfo(BaseModel):
-    title: str
-    type: str
+# class ObjInfo(BaseModel):
+#     title: str
+#     type: str
 
 
 class ResponseSchema(BaseModel):
     id: int
-    info: ObjInfo
+    info: object
     tags: list
     text: str
     updated_by: str
@@ -18,3 +18,7 @@ class ResponseSchema(BaseModel):
 class TokenGetResponseSchema(BaseModel):
     token: str
     user: str
+
+
+class ResponseSchemaAll(BaseModel):
+    data: list[ResponseSchema]
