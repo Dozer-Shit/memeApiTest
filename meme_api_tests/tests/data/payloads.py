@@ -93,6 +93,22 @@ def post_fields_binding_validation_payloads() -> list[dict]:
 post_fields_binding_validation_payloads_ids: list = ['no text', 'no url', 'no tags', 'no info']
 
 
+def generate_invalid_data_types_payloads_ids(invalid_values: list, check_int: bool = False) -> list[str]:
+    ids = []
+    for value in invalid_values:
+        if check_int and not isinstance(value, int):
+            ids.append(f"text_invalid_{type(value).__name__}")
+        if not isinstance(value, str):
+            ids.append(f"text_invalid_{type(value).__name__}")
+        if not isinstance(value, str):
+            ids.append(f"url_invalid_{type(value).__name__}")
+        if not isinstance(value, list):
+            ids.append(f"tags_invalid_{type(value).__name__}")
+        if not isinstance(value, dict):
+            ids.append(f"info_invalid_{type(value).__name__}")
+    return ids
+
+
 def post_invalid_data_types_payloads() -> list[dict]:
     invalid_values = [123, "123", True, None, [], {}, (1, 2)]
     test_cases = []
@@ -130,18 +146,8 @@ def post_invalid_data_types_payloads() -> list[dict]:
 
 
 def post_invalid_data_types_payloads_ids() -> list[str]:
-    ids = []
     invalid_values = [123, "123", True, None, [], {}, (1, 2)]
-    for value in invalid_values:
-        if not isinstance(value, str):
-            ids.append(f"text_invalid_{type(value).__name__}")
-        if not isinstance(value, str):
-            ids.append(f"url_invalid_{type(value).__name__}")
-        if not isinstance(value, list):
-            ids.append(f"tags_invalid_{type(value).__name__}")
-        if not isinstance(value, dict):
-            ids.append(f"info_invalid_{type(value).__name__}")
-    return ids
+    return generate_invalid_data_types_payloads_ids(invalid_values)
 
 
 def valid_update_payload(meme_id) -> dict:
@@ -294,17 +300,5 @@ def put_invalid_data_types_payloads() -> list[dict]:
 
 
 def put_invalid_data_types_payloads_ids() -> list[str]:
-    ids = []
     invalid_values = [123, "123", True, None, [], {}, (1, 2)]
-    for value in invalid_values:
-        if not isinstance(value, int):
-            ids.append(f"text_invalid_{type(value).__name__}")
-        if not isinstance(value, str):
-            ids.append(f"text_invalid_{type(value).__name__}")
-        if not isinstance(value, str):
-            ids.append(f"url_invalid_{type(value).__name__}")
-        if not isinstance(value, list):
-            ids.append(f"tags_invalid_{type(value).__name__}")
-        if not isinstance(value, dict):
-            ids.append(f"info_invalid_{type(value).__name__}")
-    return ids
+    return generate_invalid_data_types_payloads_ids(invalid_values, check_int=True)

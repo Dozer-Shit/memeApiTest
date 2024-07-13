@@ -9,7 +9,7 @@ from meme_api_tests.client import allure_annotations
 @allure_annotations(
     title="Valid authorization",
     story="Authorization",
-    description='This test checks creating a token with valid data',
+    description='This test checks creating a token with valid data name in request',
     severity=allure.severity_level.BLOCKER,
     tag='Positive'
 )
@@ -25,7 +25,7 @@ def test_get_auth_token_success(post_authorize_endpoint) -> None:
 @allure_annotations(
     title="Invalid data name",
     story="Authorization",
-    description='This test checks creating a token with invalid data name',
+    description='This test checks creating a token with invalid data name in request',
     severity=allure.severity_level.BLOCKER
 )
 @pytest.mark.blocker
@@ -41,7 +41,7 @@ def test_get_auth_token_invalid_name(post_authorize_endpoint, invalid_payload: d
 @allure_annotations(
     title="Invalid field in data",
     story="Authorization",
-    description='This test checks creating a token with an extra field in data',
+    description='This test checks creating a token with an extra field in request',
     severity=allure.severity_level.BLOCKER
 )
 @pytest.mark.blocker
@@ -56,7 +56,7 @@ def test_get_auth_token_with_invalid_field(post_authorize_endpoint) -> None:
 @allure_annotations(
     title="Valid token",
     story="Token check",
-    description='This test checks token relevance with valid token',
+    description='This test checks token relevance with valid token in request',
     severity=allure.severity_level.MINOR,
     tag='Positive'
 )
@@ -72,7 +72,7 @@ def test_check_valid_auth_token(get_check_token_endpoint, auth_token: str) -> No
 @allure_annotations(
     title="Invalid token",
     story="Token check",
-    description='This test checks token relevance with invalid token',
+    description='This test checks token relevance with invalid token in request',
     severity=allure.severity_level.MINOR,
 )
 @pytest.mark.minor

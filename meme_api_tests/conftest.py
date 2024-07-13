@@ -2,6 +2,8 @@ import pytest
 
 from meme_api_tests.tests.data import payloads
 
+from meme_api_tests.client import AUTHORIZATION_TOKEN, save_token
+
 from meme_api_tests.endpoints.get_check_token import GetCheckToken
 from meme_api_tests.endpoints.put_upd_meme import PutUpdMeme
 from meme_api_tests.endpoints.get_single_meme import GetMeme
@@ -9,8 +11,6 @@ from meme_api_tests.endpoints.get_all_meme import GetAllMeme
 from meme_api_tests.endpoints.post_add_meme import PostAddMeme
 from meme_api_tests.endpoints.post_authorize import PostAuthorize
 from meme_api_tests.endpoints.delete_meme import DeleteMeme
-
-from meme_api_tests.client import AUTHORIZATION_TOKEN, save_token
 
 
 @pytest.fixture(scope='session')
