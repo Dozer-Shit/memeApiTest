@@ -3,7 +3,7 @@ import pytest
 
 from meme_api_tests.tests.data import payloads
 
-from meme_api_tests.client import allure_annotations
+from meme_api_tests.utils.client import allure_annotations
 
 
 @allure_annotations(

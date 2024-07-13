@@ -1,7 +1,7 @@
 import allure
 import requests
 
-from meme_api_tests.client import MEME_URL, attach_response, validate_response
+from meme_api_tests.utils.client import MEME_URL, attach_response, validate_response
 
 from meme_api_tests.endpoints.base_api import BaseApi
 

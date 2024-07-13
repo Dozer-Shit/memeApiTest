@@ -2,7 +2,7 @@ import pytest
 
 from meme_api_tests.tests.data import payloads
 
-from meme_api_tests.client import AUTHORIZATION_TOKEN, save_token
+from meme_api_tests.utils.client import AUTHORIZATION_TOKEN, save_token
 
 from meme_api_tests.endpoints.get_check_token import GetCheckToken
 from meme_api_tests.endpoints.put_upd_meme import PutUpdMeme
