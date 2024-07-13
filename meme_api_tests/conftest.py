@@ -28,7 +28,7 @@ def auth_token(post_authorize_endpoint: PostAuthorize, get_check_token_endpoint:
 
 
 @pytest.fixture
-def meme_id(post_meme_endpoint: PostAddMeme, delete_meme_endpoint: DeleteMeme, auth_token: str) -> str:
+def meme_id(post_meme_endpoint: PostAddMeme, delete_meme_endpoint: DeleteMeme, auth_token: str) -> int:
     payload = payloads.create_meme
     meme_id = post_meme_endpoint.create_meme_object(payload, auth_token)
     yield meme_id

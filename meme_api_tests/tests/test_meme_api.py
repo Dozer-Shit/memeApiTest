@@ -129,7 +129,8 @@ def test_create_meme_object_without_auth(post_meme_endpoint, delete_meme, reques
     "invalid_payload",
     payloads.post_fields_binding_validation_payloads(),
     ids=payloads.post_fields_binding_validation_payloads_ids)
-def test_create_meme_object_with_missing_fields(post_meme_endpoint, invalid_payload, request, auth_token: str) -> None:
+def test_create_meme_object_with_missing_fields(post_meme_endpoint, invalid_payload, request,
+                                                auth_token: str) -> None:
     request.node.meme_id = post_meme_endpoint.create_meme_object(invalid_payload, auth_token)
     success, message = post_meme_endpoint.check_status_code_is_(400)
     assert success, message
@@ -356,8 +357,8 @@ def test_delete_meme_object(delete_meme_endpoint, meme_id_without_del, auth_toke
     severity=allure.severity_level.CRITICAL
 )
 @pytest.mark.critical
-def test_delete_meme_object_without_authorization(delete_meme_endpoint, meme_id_without_del, auth_token: str) -> None:
-    delete_meme_endpoint.delete_meme_object(meme_id_without_del, 'invalid_token')
+def test_delete_meme_object_without_authorization(delete_meme_endpoint, meme_id, auth_token: str) -> None:
+    delete_meme_endpoint.delete_meme_object(meme_id, 'invalid_token')
     success, message = delete_meme_endpoint.check_status_code_is_(401)
     assert success, message
     success, message = delete_meme_endpoint.check_response_message_is_("Unauthorized")
@@ -372,7 +373,7 @@ def test_delete_meme_object_without_authorization(delete_meme_endpoint, meme_id_
     severity=allure.severity_level.CRITICAL
 )
 @pytest.mark.critical
-def test_delete_meme_object_with_invalid_id(delete_meme_endpoint, meme_id_without_del, auth_token: str) -> None:
+def test_delete_meme_object_with_invalid_id(delete_meme_endpoint, meme_id, auth_token: str) -> None:
     delete_meme_endpoint.delete_meme_object(0, auth_token)
     success, message = delete_meme_endpoint.check_status_code_is_(404)
     assert success, message
