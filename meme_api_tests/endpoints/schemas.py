@@ -1,11 +1,6 @@
 from pydantic import BaseModel
 
 
-# class ObjInfo(BaseModel):
-#     title: str
-#     type: str
-
-
 class ResponseSchema(BaseModel):
     id: int
     info: object

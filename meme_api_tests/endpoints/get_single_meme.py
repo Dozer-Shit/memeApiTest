@@ -13,10 +13,12 @@ class GetMeme(BaseApi):
     def get_meme(self, meme_id: int, token: str) -> None:
         headers: dict = {"Authorization": token}
         self.response: requests.Response = requests.get(f"{MEME_URL}/{meme_id}", headers=headers)
-        # attach_response(self.response, "Response")
         if 'application/json' in self.response.headers.get('Content-Type', ''):
+            attach_response(self.response.json(), "Response")
             response_json: dict = self.response.json()
-            validate_response(self, response_json, "Response", ResponseSchema)
+            validate_response(self, response_json, ResponseSchema)
+        else:
+            attach_response(self.response.text, "Response")
 
     @allure.step('Check response id')
     def check_response_id_is_(self, meme_id) -> tuple[bool, str]:

@@ -15,7 +15,7 @@ class PutUpdMeme(BaseApi):
         self.response: requests.Response = requests.put(f"{MEME_URL}/{meme_id}", json=payload, headers=headers)
         if 'application/json' in self.response.headers.get('Content-Type', ''):
             response_json: dict = self.response.json()
-            validate_response(self, response_json, "Response", ResponseSchema)
+            validate_response(self, response_json, ResponseSchema)
 
     @allure.step('Check key in response info')
     def check_does_the_answer_hold_a_key_(self, key: str) -> tuple[bool, str]:

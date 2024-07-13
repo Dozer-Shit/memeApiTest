@@ -1,5 +1,5 @@
 create_meme: dict = {
-    "text": "Bad memory PyCharm",
+    "text": "Some valid text",
     "url": "https://pikabu.ru/story/vot_tak_novosti_9141882PyCharm",
     "tags": [
         "it",
@@ -35,7 +35,7 @@ get_token: dict = {
 def valid_update_payload(meme_id) -> dict:
     return {
         "id": meme_id,
-        "text": "Bad memory PyCharm update",
+        "text": "Valid text PyCharm update",
         "url": "https://pikabu.ru/story/vot_tak_novosti_9141882PyCharm",
         "tags": ["it", "fun", ["meme", "pycharm"]],
         "info": {
@@ -49,7 +49,7 @@ def update_params_payloads(meme_id=None) -> list[dict]:
     return [
         {
             "id": meme_id,
-            "text": "Bad memory PyCharm update",
+            "text": "Valid text PyCharm update",
             "url": "https://pikabu.ru/story/vot_tak_novosti_9141882PyCharm",
             "tags": ["it", "fun", ["meme", "pycharm"]],
             "info": {
@@ -59,7 +59,7 @@ def update_params_payloads(meme_id=None) -> list[dict]:
         },
         {
             "id": meme_id,
-            "text": "BAD MEMORY PYCHARM UPDATE",
+            "text": "VALID TEXT PYCHARM UPDATE",
             "url": "HTTPS://PIKABU.RU/STORY/VOT_TAK_NOVOSTI_9141882PYCHARM",
             "tags": ['IT', 'FUN', ['MEME', 'PYCHARM']],
             "info": {
@@ -69,7 +69,7 @@ def update_params_payloads(meme_id=None) -> list[dict]:
         },
         {
             "id": meme_id,
-            "text": "Плохая память PyCharm",
+            "text": "Правильный текст PyCharm",
             "url": "https://pikabu.ru/story/vot_tak_novosti_9141882PyCharm",
             "tags": ['айт', 'смешно', ['мем', 'pycharm']],
             "info": {

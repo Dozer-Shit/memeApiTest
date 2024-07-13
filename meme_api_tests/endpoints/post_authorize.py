@@ -14,8 +14,7 @@ class PostAuthorize(BaseApi):
         self.response: requests.Response = requests.post(AUTHORIZE_URL, json=payload)
         if 'application/json' in self.response.headers.get('Content-Type', ''):
             response_json: dict = self.response.json()
-            valid_response: TokenGetResponseSchema = validate_response(self, response_json,
-                                                                       "TokenGetResponse", TokenGetResponseSchema)
+            valid_response: TokenGetResponseSchema = validate_response(self, response_json, TokenGetResponseSchema)
             self.token: str = valid_response.token
 
             return self.token

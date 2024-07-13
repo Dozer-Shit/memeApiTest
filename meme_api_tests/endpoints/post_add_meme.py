@@ -15,7 +15,7 @@ class PostAddMeme(BaseApi):
         self.response: requests.Response = requests.post(MEME_URL, json=payload, headers=headers)
         if 'application/json' in self.response.headers.get('Content-Type', ''):
             response_json: dict = self.response.json()
-            valid_response: ResponseSchema = validate_response(self, response_json, "Response", ResponseSchema)
+            valid_response: ResponseSchema = validate_response(self, response_json, ResponseSchema)
             self.meme_id: int = valid_response.id
 
             return self.meme_id
