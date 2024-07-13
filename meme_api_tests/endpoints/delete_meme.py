@@ -11,5 +11,3 @@ class DeleteMeme(BaseApi):
     def delete_meme_object(self, meme_id: int, token: str) -> None:
         headers = {"Authorization": token}
         self.response: requests.Response = requests.delete(f"{MEME_URL}/{meme_id}", headers=headers)
-        print(self.response.status_code)
-        print(self.response.text)
