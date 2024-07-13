@@ -5,7 +5,6 @@ from pathlib import Path
 
 from typing import Any
 
-import requests
 from dotenv import load_dotenv, set_key
 
 load_dotenv()
