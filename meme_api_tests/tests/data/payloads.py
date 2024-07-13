@@ -1,3 +1,31 @@
+valid_auth_payload: dict = {
+    "name": "valid_user"
+}
+
+invalid_auth_payload: dict = {
+    "name": "invalid_user",
+    "invalid field": "invalid field"
+}
+
+get_token: dict = {
+    "name": "Evgen"
+}
+valid_token_response = {
+    "token": "valid_token",
+    "user": "valid_user"
+}
+
+
+def invalid_payload_name() -> list[dict]:
+    return [
+        {"name": ""},
+        {"name": "a" * 1001},
+        {"name": "!@#$%^&*()"}
+    ]
+
+
+invalid_payload_name_ids: list = ['empty', 'long', 'special']
+
 create_meme: dict = {
     "text": "Some valid text",
     "url": "https://pikabu.ru/story/vot_tak_novosti_9141882PyCharm",
@@ -25,84 +53,6 @@ create_meme_with_an_extra_field: dict = {
         "title": "it meme PyCharm",
         "type": "img"
     }
-}
-
-get_token: dict = {
-    "name": "Evgen"
-}
-
-
-def valid_update_payload(meme_id) -> dict:
-    return {
-        "id": meme_id,
-        "text": "Valid text PyCharm update",
-        "url": "https://pikabu.ru/story/vot_tak_novosti_9141882PyCharm",
-        "tags": ["it", "fun", ["meme", "pycharm"]],
-        "info": {
-            "title": "it meme pycharm update",
-            "type": "img update"
-        }
-    }
-
-
-def update_params_payloads(meme_id=None) -> list[dict]:
-    return [
-        {
-            "id": meme_id,
-            "text": "Valid text PyCharm update",
-            "url": "https://pikabu.ru/story/vot_tak_novosti_9141882PyCharm",
-            "tags": ["it", "fun", ["meme", "pycharm"]],
-            "info": {
-                "title": "it meme pycharm update",
-                "type": "img update"
-            }
-        },
-        {
-            "id": meme_id,
-            "text": "VALID TEXT PYCHARM UPDATE",
-            "url": "HTTPS://PIKABU.RU/STORY/VOT_TAK_NOVOSTI_9141882PYCHARM",
-            "tags": ['IT', 'FUN', ['MEME', 'PYCHARM']],
-            "info": {
-                "title": "IT MEME PYCHARM UPDATE",
-                "type": "IMG UPDATE"
-            }
-        },
-        {
-            "id": meme_id,
-            "text": "Правильный текст PyCharm",
-            "url": "https://pikabu.ru/story/vot_tak_novosti_9141882PyCharm",
-            "tags": ['айт', 'смешно', ['мем', 'pycharm']],
-            "info": {
-                "title": "айт мем pycharm",
-                "type": "img"
-            }
-        }
-    ]
-
-
-payload_update_ids: list = ['lowercase', 'uppercase', 'rus']
-
-valid_token_response = {
-    "token": "valid_token",
-    "user": "valid_user"
-}
-
-
-def invalid_payload_name() -> list[dict]:
-    return [
-        {"name": ""},
-        {"name": "a" * 1001},
-        {"name": "!@#$%^&*()"}
-    ]
-
-
-invalid_payload_name_ids: list = ['empty', 'long', 'special']
-
-valid_auth_payload: dict = {"name": "valid_user"}
-
-invalid_auth_payload: dict = {
-    "name": "invalid_user",
-    "invalid field": "invalid field"
 }
 
 
@@ -192,6 +142,57 @@ def post_invalid_data_types_payloads_ids() -> list[str]:
         if not isinstance(value, dict):
             ids.append(f"info_invalid_{type(value).__name__}")
     return ids
+
+
+def valid_update_payload(meme_id) -> dict:
+    return {
+        "id": meme_id,
+        "text": "Valid text PyCharm update",
+        "url": "https://pikabu.ru/story/vot_tak_novosti_9141882PyCharm",
+        "tags": ["it", "fun", ["meme", "pycharm"]],
+        "info": {
+            "title": "it meme pycharm update",
+            "type": "img update"
+        }
+    }
+
+
+def update_params_payloads(meme_id=None) -> list[dict]:
+    return [
+        {
+            "id": meme_id,
+            "text": "Valid text PyCharm update",
+            "url": "https://pikabu.ru/story/vot_tak_novosti_9141882PyCharm",
+            "tags": ["it", "fun", ["meme", "pycharm"]],
+            "info": {
+                "title": "it meme pycharm update",
+                "type": "img update"
+            }
+        },
+        {
+            "id": meme_id,
+            "text": "VALID TEXT PYCHARM UPDATE",
+            "url": "HTTPS://PIKABU.RU/STORY/VOT_TAK_NOVOSTI_9141882PYCHARM",
+            "tags": ['IT', 'FUN', ['MEME', 'PYCHARM']],
+            "info": {
+                "title": "IT MEME PYCHARM UPDATE",
+                "type": "IMG UPDATE"
+            }
+        },
+        {
+            "id": meme_id,
+            "text": "Правильный текст PyCharm",
+            "url": "https://pikabu.ru/story/vot_tak_novosti_9141882PyCharm",
+            "tags": ['айт', 'смешно', ['мем', 'pycharm']],
+            "info": {
+                "title": "айт мем pycharm",
+                "type": "img"
+            }
+        }
+    ]
+
+
+payload_update_ids: list = ['lowercase', 'uppercase', 'rus']
 
 
 def put_fields_binding_validation_payloads(meme_id=None) -> list[dict]:

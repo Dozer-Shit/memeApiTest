@@ -7,11 +7,11 @@ from meme_api_tests.client import allure_annotations
 
 
 @allure_annotations(
-    title="Authorization with valid data test",
-    story="POST",
+    title="Valid authorization",
+    story="Authorization",
     description='This test checks creating a token with valid data',
     severity=allure.severity_level.BLOCKER,
-    tag='!!!'
+    tag='Positive'
 )
 @pytest.mark.blocker
 def test_get_auth_token_success(post_authorize_endpoint) -> None:
@@ -23,11 +23,10 @@ def test_get_auth_token_success(post_authorize_endpoint) -> None:
 
 
 @allure_annotations(
-    title="Authorization with invalid data name ",
-    story="POST",
+    title="Invalid data name",
+    story="Authorization",
     description='This test checks creating a token with invalid data name',
-    severity=allure.severity_level.BLOCKER,
-    tag='!!!'
+    severity=allure.severity_level.BLOCKER
 )
 @pytest.mark.blocker
 @pytest.mark.parametrize("invalid_payload", payloads.invalid_payload_name(), ids=payloads.invalid_payload_name_ids)
@@ -40,11 +39,10 @@ def test_get_auth_token_invalid_name(post_authorize_endpoint, invalid_payload: d
 
 
 @allure_annotations(
-    title="Authorization with invalid field in data test",
-    story="POST",
-    description='This test checks creating a token with invalid field in data',
-    severity=allure.severity_level.BLOCKER,
-    tag='!!!'
+    title="Invalid field in data",
+    story="Authorization",
+    description='This test checks creating a token with an extra field in data',
+    severity=allure.severity_level.BLOCKER
 )
 @pytest.mark.blocker
 def test_get_auth_token_with_invalid_field(post_authorize_endpoint) -> None:
@@ -56,10 +54,11 @@ def test_get_auth_token_with_invalid_field(post_authorize_endpoint) -> None:
 
 
 @allure_annotations(
-    title="Live token with valid token test",
-    story="POST",
+    title="Valid token",
+    story="Token check",
     description='This test checks token relevance with valid token',
     severity=allure.severity_level.MINOR,
+    tag='Positive'
 )
 @pytest.mark.minor
 def test_check_valid_auth_token(get_check_token_endpoint, auth_token: str) -> None:
@@ -71,8 +70,8 @@ def test_check_valid_auth_token(get_check_token_endpoint, auth_token: str) -> No
 
 
 @allure_annotations(
-    title="Live token with invalid token test",
-    story="POST",
+    title="Invalid token",
+    story="Token check",
     description='This test checks token relevance with invalid token',
     severity=allure.severity_level.MINOR,
 )
@@ -86,11 +85,11 @@ def test_check_invalid_auth_token(get_check_token_endpoint) -> None:
 
 
 @allure_annotations(
-    title="Adding a meme object test",
-    story="POST",
-    description='This test checks adding a meme object',
+    title="Valid meme",
+    story="Create",
+    description='This test checks adding a valid meme object',
     severity=allure.severity_level.CRITICAL,
-    tag='!!!'
+    tag='Positive'
 )
 @pytest.mark.critical
 def test_create_meme_object(post_meme_endpoint, delete_meme, request, auth_token: str) -> None:
@@ -102,11 +101,10 @@ def test_create_meme_object(post_meme_endpoint, delete_meme, request, auth_token
 
 
 @allure_annotations(
-    title="Adding a meme object without authorization test",
-    story="POST",
+    title="Without authorization",
+    story="Create",
     description='This test checks adding a meme object without authorization',
-    severity=allure.severity_level.CRITICAL,
-    tag='!!!'
+    severity=allure.severity_level.CRITICAL
 )
 @pytest.mark.critical
 def test_create_meme_object_without_auth(post_meme_endpoint, delete_meme, request, auth_token: str) -> None:
@@ -118,11 +116,10 @@ def test_create_meme_object_without_auth(post_meme_endpoint, delete_meme, reques
 
 
 @allure_annotations(
-    title="Adding a meme object with missing mandatory fields test",
-    story="POST",
-    description='This test checks adding a meme object with missing mandatory fields',
-    severity=allure.severity_level.CRITICAL,
-    tag='!!!'
+    title="Missing mandatory fields",
+    story="Create",
+    description='This test checks adding a meme object with missing mandatory fields in request payload',
+    severity=allure.severity_level.CRITICAL
 )
 @pytest.mark.critical
 @pytest.mark.parametrize(
@@ -139,11 +136,10 @@ def test_create_meme_object_with_missing_fields(post_meme_endpoint, invalid_payl
 
 
 @allure_annotations(
-    title="Adding a meme object with invalid data types in request payload test",
-    story="POST",
+    title="Invalid data types",
+    story="Create",
     description='This test checks adding a meme object with invalid data types in request payload',
-    severity=allure.severity_level.CRITICAL,
-    tag='!!!'
+    severity=allure.severity_level.CRITICAL
 )
 @pytest.mark.critical
 @pytest.mark.parametrize(
@@ -160,11 +156,10 @@ def test_create_meme_object_with_invalid_data_types(post_meme_endpoint, invalid_
 
 
 @allure_annotations(
-    title="Adding a meme object with extra field test",
-    story="POST",
-    description='This test checks adding a meme object with extra field',
-    severity=allure.severity_level.CRITICAL,
-    tag='!!!'
+    title="Extra field",
+    story="Create",
+    description='This test checks adding a meme object with extra field in request payload',
+    severity=allure.severity_level.CRITICAL
 )
 @pytest.mark.critical
 def test_create_meme_object_with_extra_field(post_meme_endpoint, delete_meme, request, auth_token: str) -> None:
@@ -176,10 +171,11 @@ def test_create_meme_object_with_extra_field(post_meme_endpoint, delete_meme, re
 
 
 @allure_annotations(
-    title="Get meme object test",
-    story="GET",
-    description='This test checks getting a meme object',
-    severity=allure.severity_level.MINOR
+    title="Valid meme",
+    story="Get by id",
+    description='This test checks getting a valid meme object',
+    severity=allure.severity_level.MINOR,
+    tag='Positive'
 )
 @pytest.mark.minor
 def test_get_meme_object(get_meme_endpoint, meme_id: int, auth_token: str) -> None:
@@ -191,8 +187,8 @@ def test_get_meme_object(get_meme_endpoint, meme_id: int, auth_token: str) -> No
 
 
 @allure_annotations(
-    title="Get meme object without authorization test",
-    story="GET",
+    title="Without authorization",
+    story="Get by id",
     description='This test checks getting a meme object without authorization',
     severity=allure.severity_level.MINOR
 )
@@ -206,9 +202,9 @@ def test_get_meme_object_without_auth(get_meme_endpoint, meme_id: int, auth_toke
 
 
 @allure_annotations(
-    title="Get meme object with invalid id test",
-    story="GET",
-    description='This test checks getting a meme object with invalid id',
+    title="Invalid id",
+    story="Get by id",
+    description='This test checks getting a meme object with invalid id in request payload',
     severity=allure.severity_level.MINOR
 )
 @pytest.mark.minor
@@ -221,10 +217,11 @@ def test_get_meme_object_with_invalid_id(get_meme_endpoint, meme_id: int, auth_t
 
 
 @allure_annotations(
-    title="Get all meme objects test",
-    story="GET",
-    description='This test checks getting all meme objects',
-    severity=allure.severity_level.MINOR
+    title="All valid meme",
+    story="Get all",
+    description='This test checks getting all valid meme objects',
+    severity=allure.severity_level.MINOR,
+    tag='Positive'
 )
 @pytest.mark.minor
 def test_get_all_meme_objects(get_all_meme_endpoint, auth_token: str) -> None:
@@ -236,8 +233,8 @@ def test_get_all_meme_objects(get_all_meme_endpoint, auth_token: str) -> None:
 
 
 @allure_annotations(
-    title="Get all meme objects without authorization test",
-    story="GET",
+    title="Without authorization",
+    story="Get all",
     description='This test checks getting all meme objects without authorization',
     severity=allure.severity_level.MINOR
 )
@@ -251,9 +248,10 @@ def test_get_all_meme_objects_without_auth(get_all_meme_endpoint, auth_token: st
 
 
 @allure_annotations(
-    title="Update meme object test",
-    story="PUT",
-    description='This test checks updating a meme object',
+    title="Valid meme",
+    story="Update",
+    description='This test checks updating a valid meme object',
+    tag='Positive'
 )
 @pytest.mark.parametrize("request_data", payloads.update_params_payloads(), ids=payloads.payload_update_ids)
 def test_update_object(update_meme_endpoint, request_data: dict, meme_id: int, auth_token: str) -> None:
@@ -270,8 +268,8 @@ def test_update_object(update_meme_endpoint, request_data: dict, meme_id: int, a
 
 
 @allure_annotations(
-    title="Update meme object without authorization test",
-    story="PUT",
+    title="Without authorization",
+    story="Update",
     description='This test checks updating a meme object without authorization',
 )
 def test_update_object_without_auth(update_meme_endpoint, meme_id: int, auth_token: str) -> None:
@@ -283,9 +281,9 @@ def test_update_object_without_auth(update_meme_endpoint, meme_id: int, auth_tok
 
 
 @allure_annotations(
-    title="Update meme object with invalid id test",
-    story="PUT",
-    description='This test checks updating a meme object with invalid id',
+    title="Invalid id",
+    story="Update",
+    description='This test checks updating a meme object with invalid id in request payload',
 )
 def test_update_object_with_invalid_id(update_meme_endpoint, meme_id: int, auth_token: str) -> None:
     update_meme_endpoint.update_meme_object(payloads.valid_update_payload(meme_id), 0, auth_token)
@@ -296,9 +294,9 @@ def test_update_object_with_invalid_id(update_meme_endpoint, meme_id: int, auth_
 
 
 @allure_annotations(
-    title="Update meme object with invalid data types test",
-    story="PUT",
-    description='This test checks updating a meme object with invalid data types',
+    title="Invalid data types",
+    story="Update",
+    description='This test checks updating a meme object with invalid data types in request payload',
 )
 @pytest.mark.parametrize(
     "invalid_data_types",
@@ -314,9 +312,9 @@ def test_update_object_with_invalid_data_types(update_meme_endpoint, invalid_dat
 
 
 @allure_annotations(
-    title="Update meme object with missing mandatory fields test",
-    story="PUT",
-    description='This test checks updating a meme object with missing mandatory fields',
+    title="Missing mandatory fields",
+    story="Update",
+    description='This test checks updating a meme object with missing mandatory fields in request payload',
 )
 @pytest.mark.parametrize(
     "missing_data_fields",
@@ -334,11 +332,11 @@ def test_update_object_with_missing_mandatory_fields(update_meme_endpoint, missi
 
 
 @allure_annotations(
-    title="Delete meme object with valid id test",
-    story="DELETE",
-    description='This test checks deleting a meme object with valid id',
-    tag='!!!',
-    severity=allure.severity_level.CRITICAL
+    title="Valid id",
+    story="Delete",
+    description='This test checks deleting a meme object with valid id in request',
+    severity=allure.severity_level.CRITICAL,
+    tag='Positive'
 )
 @pytest.mark.critical
 def test_delete_meme_object(delete_meme_endpoint, meme_id_without_del, auth_token: str) -> None:
@@ -350,11 +348,10 @@ def test_delete_meme_object(delete_meme_endpoint, meme_id_without_del, auth_toke
 
 
 @allure_annotations(
-    title="Delete meme object without authorization test",
-    story="DELETE",
+    title="Without authorization",
+    story="Delete",
     description='This test checks deleting a meme object without authorization',
-    tag='!!!',
-    severity=allure.severity_level.CRITICAL
+    severity=allure.severity_level.CRITICAL,
 )
 @pytest.mark.critical
 def test_delete_meme_object_without_authorization(delete_meme_endpoint, meme_id, auth_token: str) -> None:
@@ -366,10 +363,9 @@ def test_delete_meme_object_without_authorization(delete_meme_endpoint, meme_id,
 
 
 @allure_annotations(
-    title="Delete meme object with invalid id test",
-    story="DELETE",
-    description='This test checks deleting a meme object with invalid id',
-    tag='!!!',
+    title="Invalid id",
+    story="Delete",
+    description='This test checks deleting a meme object with invalid id in request',
     severity=allure.severity_level.CRITICAL
 )
 @pytest.mark.critical

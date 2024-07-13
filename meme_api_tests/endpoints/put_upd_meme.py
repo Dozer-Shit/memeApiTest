@@ -10,7 +10,7 @@ from meme_api_tests.endpoints.schemas import ResponseSchema
 
 class PutUpdMeme(BaseApi):
     @allure.step('Update meme object')
-    def update_meme_object(self, payload: dict, meme_id: int, token) -> None:
+    def update_meme_object(self, payload: dict, meme_id: int, token: str) -> None:
         headers: dict = {"Authorization": token}
         self.response: requests.Response = requests.put(f"{MEME_URL}/{meme_id}", json=payload, headers=headers)
         if 'application/json' in self.response.headers.get('Content-Type', ''):

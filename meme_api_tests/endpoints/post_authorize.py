@@ -26,8 +26,3 @@ class PostAuthorize(BaseApi):
     def check_response_name_is_(self, name: str) -> tuple[bool, str]:
         return name == self.valid_response.user, (f"Expected message to contain '{name}', "
                                                   + f"got {self.valid_response.user}")
-
-    @allure.step('Checking the response message')
-    def check_response_message_is_(self, message: str) -> tuple[bool, str]:
-        return message in self.response.text, (f"Expected message to contain '{message}', "
-                                               + f"got {self.response.text}")

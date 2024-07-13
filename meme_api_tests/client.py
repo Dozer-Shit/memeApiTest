@@ -30,7 +30,7 @@ def attach_error(value: str, name: str) -> allure:
     allure.attach(value, name=name, attachment_type=allure.attachment_type.TEXT)
 
 
-def allure_annotations(title: str, story: str, description: str, tag: str = "",
+def allure_annotations(title: str, story: str, description: str, tag: str = "Negative",
                        severity: allure = allure.severity_level.NORMAL, feature: str = "MEME API") -> Any:
     def wrapper(func: Any) -> Any:
         func = allure.title(title)(func)

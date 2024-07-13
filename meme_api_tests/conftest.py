@@ -49,11 +49,6 @@ def delete_meme(request: pytest.FixtureRequest, delete_meme_endpoint: 'DeleteMem
     delete_meme_endpoint.delete_meme_object(meme_id, auth_token)
 
 
-@pytest.fixture
-def post_meme_endpoint() -> PostAddMeme:
-    return PostAddMeme()
-
-
 @pytest.fixture(scope='session')
 def post_authorize_endpoint() -> PostAuthorize:
     return PostAuthorize()
@@ -72,6 +67,11 @@ def get_meme_endpoint() -> GetMeme:
 @pytest.fixture
 def get_all_meme_endpoint() -> GetAllMeme:
     return GetAllMeme()
+
+
+@pytest.fixture
+def post_meme_endpoint() -> PostAddMeme:
+    return PostAddMeme()
 
 
 @pytest.fixture
