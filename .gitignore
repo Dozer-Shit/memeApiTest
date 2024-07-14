@@ -11,3 +11,4 @@ meme_api_tests/.env
 allure-results
 allure-report
 allure-rereport
+.env
