@@ -89,6 +89,10 @@ def test_create_meme_object(post_meme_endpoint, delete_meme, request, auth_token
     request.node.meme_id = post_meme_endpoint.create_meme_object(payloads.create_meme, auth_token)
     post_meme_endpoint.check_status_code_is_(200)
     post_meme_endpoint.check_response_url_is_(payloads.create_meme['url'])
+    post_meme_endpoint.check_response_tags_is_(payloads.create_meme['tags'])
+    post_meme_endpoint.check_response_text_is_(payloads.create_meme['text'])
+    post_meme_endpoint.check_response_info_is_(payloads.create_meme['info'])
+    post_meme_endpoint.check_response_name_is_(payloads.get_token['name'])
 
 
 @allure_annotations(

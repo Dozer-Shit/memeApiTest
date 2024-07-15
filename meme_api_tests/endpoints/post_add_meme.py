@@ -19,3 +19,8 @@ class PostAddMeme(BaseApi):
             return self.valid_response.id
         else:
             attach_response(self.response.text, "Response")
+
+    @allure.step('Checking the correct request name')
+    def check_response_name_is_(self, name: str) -> None:
+        assert name == self.valid_response.updated_by, (f"Expected message to contain '{name}', "
+                                                        + f"got {self.valid_response.updated_by}")
