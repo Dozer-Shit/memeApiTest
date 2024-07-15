@@ -14,13 +14,16 @@ class BaseApi:
     valid_response: ResponseSchema
     token: str
 
-    @allure.step('Validate response schema')
     def validate_response(self, schema: Any) -> None:
-        try:
-            self.valid_response = schema(**self.response.json())
-        except Exception as e:
-            attach_error(str(e), name="Validation Error")
-            assert False, f"Validation error: {str(e)}"
+        schema_name = schema.__name__
+        with allure.step(f'Validate response schema: {schema_name}'):
+            try:
+                self.valid_response = schema(**self.response.json())
+                allure.attach(str(self.valid_response), name="Validated Response",
+                              attachment_type=allure.attachment_type.JSON)
+            except Exception as e:
+                attach_error(str(e), name="Validation Error")
+                assert False, f"Validation error: {str(e)}"
 
     @allure.step('Check status code')
     def check_status_code_is_(self, status_code: int) -> None:
