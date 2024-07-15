@@ -42,13 +42,3 @@ def allure_annotations(title: str, story: str, description: str, tag: str,
         return func
 
     return wrapper
-
-
-# def validate_response(self, response_json: dict, schema: Any) -> Any:
-#     try:
-#         valid_response = schema(**response_json)
-#         self.valid_response = valid_response
-#         return self.valid_response
-#     except Exception as e:
-#         attach_error(str(e), name="Validation Error")
-#         assert False, f"Validation error: {str(e)}"
