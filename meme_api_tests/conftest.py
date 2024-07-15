@@ -17,12 +17,15 @@ from meme_api_tests.endpoints.delete_meme import DeleteMeme
 def auth_token(post_authorize_endpoint: PostAuthorize, get_check_token_endpoint: GetCheckToken) -> str:
     token = AUTHORIZATION_TOKEN
     if not token:
-        save_token(post_authorize_endpoint.get_token(payloads.get_token))
+        token = post_authorize_endpoint.get_token(payloads.get_token)
+        save_token(token)
 
     get_check_token_endpoint.check_token_is_valid(token)
-    success, message = get_check_token_endpoint.check_response_message_is_("Token is alive")
-    if not success:
-        save_token(post_authorize_endpoint.get_token(payloads.get_token))
+    try:
+        get_check_token_endpoint.check_response_message_is_("Token is alive")
+    except AssertionError:
+        token = post_authorize_endpoint.get_token(payloads.get_token)
+        save_token(token)
 
     return token
 

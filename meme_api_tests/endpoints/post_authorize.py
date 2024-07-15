@@ -1,7 +1,7 @@
 import allure
 import requests
 
-from meme_api_tests.utils.client import AUTHORIZE_URL, validate_response, attach_response
+from meme_api_tests.utils.client import AUTHORIZE_URL, attach_response
 
 from meme_api_tests.endpoints.base_api import BaseApi
 
@@ -14,15 +14,13 @@ class PostAuthorize(BaseApi):
         self.response: requests.Response = requests.post(AUTHORIZE_URL, json=payload)
         if 'application/json' in self.response.headers.get('Content-Type', ''):
             attach_response(self.response.json(), "Response")
-            response_json: dict = self.response.json()
-            valid_response: TokenGetResponseSchema = validate_response(self, response_json, TokenGetResponseSchema)
-            self.token: str = valid_response.token
+            self.validate_response(TokenGetResponseSchema)
 
-            return self.token
+            return self.valid_response.token
         else:
             attach_response(self.response.text, "Response")
 
     @allure.step('Checking the correct request name')
-    def check_response_name_is_(self, name: str) -> tuple[bool, str]:
-        return name == self.valid_response.user, (f"Expected message to contain '{name}', "
+    def check_response_name_is_(self, name: str) -> None:
+        assert name == self.valid_response.user, (f"Expected message to contain '{name}', "
                                                   + f"got {self.valid_response.user}")

@@ -30,7 +30,7 @@ def attach_error(value: str, name: str) -> allure:
     allure.attach(value, name=name, attachment_type=allure.attachment_type.TEXT)
 
 
-def allure_annotations(title: str, story: str, description: str, tag: str = "Negative",
+def allure_annotations(title: str, story: str, description: str, tag: str,
                        severity: allure = allure.severity_level.NORMAL, feature: str = "MEME API") -> Any:
     def wrapper(func: Any) -> Any:
         func = allure.title(title)(func)
@@ -44,11 +44,11 @@ def allure_annotations(title: str, story: str, description: str, tag: str = "Neg
     return wrapper
 
 
-def validate_response(self, response_json: dict, schema: Any) -> Any:
-    try:
-        valid_response = schema(**response_json)
-        self.valid_response = valid_response
-        return self.valid_response
-    except Exception as e:
-        attach_error(str(e), name="Validation Error")
-        assert False, f"Validation error: {str(e)}"
+# def validate_response(self, response_json: dict, schema: Any) -> Any:
+#     try:
+#         valid_response = schema(**response_json)
+#         self.valid_response = valid_response
+#         return self.valid_response
+#     except Exception as e:
+#         attach_error(str(e), name="Validation Error")
+#         assert False, f"Validation error: {str(e)}"
