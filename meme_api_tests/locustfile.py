@@ -21,7 +21,7 @@ class UserBehavior(TaskSet):
             self.client.delete(f"/meme/{meme_id}", headers=headers)
         self.meme_ids.clear()
 
-    @task(7)
+    @task(9)
     def get_meme(self):
         headers = {"Authorization": self.token} if self.token else {}
         post_id = randrange(1, 50)
@@ -32,7 +32,7 @@ class UserBehavior(TaskSet):
         headers = {"Authorization": self.token} if self.token else {}
         self.client.get("/meme", headers=headers)
 
-    @task(10)
+    @task(7)
     def add_meme(self):
         if self.token:
             headers = {"Authorization": self.token}
